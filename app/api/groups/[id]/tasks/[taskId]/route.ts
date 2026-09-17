@@ -61,13 +61,6 @@ export async function DELETE(
     return NextResponse.json({ error: "Group not found" }, { status: 404 });
   }
 
-  if (group.ownerId !== session.user.id) {
-    return NextResponse.json(
-      { error: "Only the group owner can delete tasks from this group" },
-      { status: 403 }
-    );
-  }
-
   const deleted = await deleteTask(params.id, params.taskId);
   if (!deleted) {
     return NextResponse.json({ error: "Task not found" }, { status: 404 });

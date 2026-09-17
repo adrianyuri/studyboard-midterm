@@ -41,13 +41,6 @@ export async function POST(
     return NextResponse.json({ error: "Group not found" }, { status: 404 });
   }
 
-  if (group.ownerId !== session.user.id) {
-    return NextResponse.json(
-      { error: "Only the group owner can add tasks." },
-      { status: 403 }
-    );
-  }
-
   const newTask = await createTask(params.id, parsedResponse.data.title);
   return NextResponse.json(newTask, { status: 201 });
 }

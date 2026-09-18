@@ -25,6 +25,7 @@ async function main() {
       name: "Data Structures Study Circle",
       subject: "Computer Science",
       memberCount: 5,
+      isDefault: true,
       ownerId: demoUser.id,
       tasks: {
         create: [
@@ -41,6 +42,7 @@ async function main() {
       name: "Thermodynamics Crew",
       subject: "Physics",
       memberCount: 3,
+      isDefault: true,
       ownerId: demoUser.id,
       tasks: {
         create: [
@@ -56,6 +58,7 @@ async function main() {
       name: "Philippine History Readers",
       subject: "History",
       memberCount: 8,
+      isDefault: true,
       ownerId: demoUser.id,
       tasks: {
         create: [

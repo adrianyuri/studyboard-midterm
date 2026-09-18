@@ -12,6 +12,7 @@ export type Group = {
   name: string;
   subject: string;
   memberCount: number;
+  isDefault: boolean;
   tasks: Task[];
   ownerId: string;
   owner: {

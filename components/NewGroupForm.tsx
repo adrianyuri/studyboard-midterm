@@ -16,24 +16,32 @@ export default function NewGroupForm() {
     e.preventDefault();
     setError("");
     setIsSubmitting(true);
+    const controller = new AbortController();
+    const timeoutId = window.setTimeout(() => controller.abort(), 10000);
 
-    const response = await fetch("/api/groups", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ name, subject, memberCount }),
-    });
+    try {
+      const response = await fetch("/api/groups", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ name, subject, memberCount }),
+        signal: controller.signal,
+      });
 
-    const data = await response.json();
-    if (!response.ok) {
-      setError(data.error || "Unable to create the group.");
+      const data = await response.json();
+      if (!response.ok) {
+        setError(data.error || "Unable to create the group.");
+        return;
+      }
+
+      router.push(`/groups/${data.id}`);
+    } catch {
+      setError("The request timed out or the server is unavailable. Please try again.");
+    } finally {
+      window.clearTimeout(timeoutId);
       setIsSubmitting(false);
-      return;
     }
-
-    router.push(`/groups/${data.id}`);
-    setIsSubmitting(false);
   }
 
   return (

@@ -23,7 +23,7 @@ export default async function GroupDetailPage({
   }
 
   return (
-    <div>
+    <div className="mx-auto max-w-3xl px-4 py-8 sm:px-6 lg:px-8">
       <div className="flex items-start justify-between gap-4">
         <div>
           <h1 className="text-3xl font-bold">{group.name}</h1>
@@ -32,11 +32,11 @@ export default async function GroupDetailPage({
             {group.owner.name}
           </p>
         </div>
-        {session && <DeleteGroupButton groupId={group.id} />}
+        {session && !group.isDefault && <DeleteGroupButton groupId={group.id} />}
       </div>
 
       <h2 className="mt-8 text-lg font-semibold">Tasks</h2>
-      {session && (
+      {session && !group.isDefault && (
         <div className="mt-3">
           <NewTaskForm groupId={group.id} />
         </div>
@@ -47,7 +47,7 @@ export default async function GroupDetailPage({
             key={task.id}
             task={task}
             groupId={group.id}
-            canDelete={Boolean(session)}
+            canDelete={Boolean(session) && !group.isDefault}
           />
         ))}
       </ul>

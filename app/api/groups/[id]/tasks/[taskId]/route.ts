@@ -61,6 +61,13 @@ export async function DELETE(
     return NextResponse.json({ error: "Group not found" }, { status: 404 });
   }
 
+  if (group.isDefault) {
+    return NextResponse.json(
+      { error: "Tasks in default groups cannot be deleted" },
+      { status: 403 }
+    );
+  }
+
   const deleted = await deleteTask(params.id, params.taskId);
   if (!deleted) {
     return NextResponse.json({ error: "Task not found" }, { status: 404 });

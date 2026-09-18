@@ -72,27 +72,19 @@ export async function updateGroup(
   id: string,
   updates: UpdateGroupInput
 ): Promise<Group | undefined> {
-  try {
-    return await prisma.group.update({
-      where: { id },
-      data: updates,
-      include: {
-        tasks: true,
-        owner: { select: { id: true, name: true } },
-      },
-    });
-  } catch {
-    return undefined;
-  }
+  return await prisma.group.update({
+    where: { id },
+    data: updates,
+    include: {
+      tasks: true,
+      owner: { select: { id: true, name: true } },
+    },
+  });
 }
 
 export async function deleteGroup(id: string): Promise<boolean> {
-  try {
-    await prisma.group.delete({ where: { id } });
-    return true;
-  } catch {
-    return false;
-  }
+  await prisma.group.delete({ where: { id } });
+  return true;
 }
 
 export async function createTask(

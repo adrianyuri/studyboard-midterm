@@ -18,25 +18,21 @@ export default function LoginPage() {
     setError("");
     setIsSubmitting(true);
 
-    try {
-      const result = await signIn("credentials", {
-        email,
-        password,
-        redirect: false,
-      });
+    const result = await signIn("credentials", {
+      email,
+      password,
+      redirect: false,
+    });
 
-      if (result?.error) {
-        setError("Invalid email or password.");
-        return;
-      }
-
-      router.push("/groups");
-      router.refresh();
-    } catch {
-      setError("Unable to log in. Please try again.");
-    } finally {
+    if (result?.error) {
+      setError("Invalid email or password.");
       setIsSubmitting(false);
+      return;
     }
+
+    router.push("/groups");
+    router.refresh();
+    setIsSubmitting(false);
   }
 
   return (

@@ -30,23 +30,19 @@ export default function TaskItem({
     setIsDeleting(true);
     setError("");
 
-    try {
-      const response = await fetch(`/api/groups/${groupId}/tasks/${task.id}`, {
-        method: "DELETE",
-      });
+    const response = await fetch(`/api/groups/${groupId}/tasks/${task.id}`, {
+      method: "DELETE",
+    });
 
-      if (!response.ok) {
-        const data = await response.json().catch(() => ({}));
-        setError(data.error ?? "Failed to delete task.");
-        return;
-      }
-
-      router.refresh();
-    } catch {
-      setError("Failed to delete task.");
-    } finally {
+    if (!response.ok) {
+      const data = await response.json();
+      setError(data.error ?? "Failed to delete task.");
       setIsDeleting(false);
+      return;
     }
+
+    router.refresh();
+    setIsDeleting(false);
   }
 
   return (

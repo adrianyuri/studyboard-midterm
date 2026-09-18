@@ -19,37 +19,34 @@ export default function RegisterPage() {
     setError("");
     setIsSubmitting(true);
 
-    try {
-      const response = await fetch("/api/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, password }),
-      });
-      const data = await response.json();
+    const response = await fetch("/api/register", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name, email, password }),
+    });
+    const data = await response.json();
 
-      if (!response.ok) {
-        setError(data.error || "Unable to create your account.");
-        return;
-      }
-
-      const result = await signIn("credentials", {
-        email,
-        password,
-        redirect: false,
-      });
-
-      if (result?.error) {
-        setError("Account created, but automatic login failed.");
-        return;
-      }
-
-      router.push("/groups");
-      router.refresh();
-    } catch {
-      setError("Unable to create your account. Please try again.");
-    } finally {
+    if (!response.ok) {
+      setError(data.error || "Unable to create your account.");
       setIsSubmitting(false);
+      return;
     }
+
+    const result = await signIn("credentials", {
+      email,
+      password,
+      redirect: false,
+    });
+
+    if (result?.error) {
+      setError("Account created, but automatic login failed.");
+      setIsSubmitting(false);
+      return;
+    }
+
+    router.push("/groups");
+    router.refresh();
+    setIsSubmitting(false);
   }
 
   return (

@@ -17,27 +17,23 @@ export default function NewGroupForm() {
     setError("");
     setIsSubmitting(true);
 
-    try {
-      const response = await fetch("/api/groups", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ name, subject, memberCount }),
-      });
+    const response = await fetch("/api/groups", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ name, subject, memberCount }),
+    });
 
-      const data = await response.json();
-      if (!response.ok) {
-        setError(data.error || "Unable to create the group.");
-        return;
-      }
-
-      router.push(`/groups/${data.id}`);
-    } catch {
-      setError("Unable to create the group. Please try again.");
-    } finally {
+    const data = await response.json();
+    if (!response.ok) {
+      setError(data.error || "Unable to create the group.");
       setIsSubmitting(false);
+      return;
     }
+
+    router.push(`/groups/${data.id}`);
+    setIsSubmitting(false);
   }
 
   return (
